@@ -1,0 +1,7 @@
+datasets
+groq
+sentence-transformers
+python-dotenv
+pandas
+scikit-learn
+torch
