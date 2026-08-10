@@ -1,0 +1,64 @@
+{
+"overall": {
+"n": 2451,
+"agree": 1516,
+"agree_pct": 61.9,
+"kappa": 0.22,
+"cm": [
+[
+965,
+372
+],
+[
+563,
+551
+]
+]
+},
+"agents": {
+"n": 1634,
+"agree": 1019,
+"agree_pct": 62.4,
+"kappa": 0.234,
+"cm": [
+[
+638,
+240
+],
+[
+375,
+381
+]
+]
+},
+"qwen": {
+"n": 817,
+"agree": 497,
+"agree_pct": 60.8,
+"kappa": 0.191,
+"cm": [
+[
+327,
+132
+],
+[
+188,
+170
+]
+]
+},
+"consistency_njudged": 817,
+"consistency_consistent": 816,
+"consistency_pct": 99.9,
+"v_status": 1,
+"v_sel": 1,
+"v_fac": 0,
+"v_pc": 0,
+"op_parsed_ok": 816,
+"op_fallback": 1,
+"op_judge_err": 0,
+"op_njudged": 817,
+"N": 817,
+"audit_rows": 30,
+"audit_disagreements": 20
+}

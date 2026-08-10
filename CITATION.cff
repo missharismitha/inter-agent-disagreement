@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "Inter-Agent Disagreement as a Signal of Hallucination in AI Agent-Based Question Answering"
+abstract: >-
+  A study of whether semantic disagreement between two role-conditioned LLM
+  agents can serve as a reliable signal of hallucination risk, evaluated on the
+  full 817-question TruthfulQA generation split with a judge-graded, fair
+  comparison against a single-model Qwen 3 32B baseline. Main finding: inter-agent
+  disagreement does NOT predict hallucination (a clean, well-powered negative result).
+type: software
+authors:
+  - family-names: Gogikar
+    given-names: Harismitha
+    affiliation: "Deggendorf Institute of Technology (M.Eng. AI for Smart Sensors and Actuators)"
+keywords:
+  - large-language-models
+  - hallucination-detection
+  - multi-agent-systems
+  - llm-evaluation
+  - truthfulqa
+license: MIT
+date-released: 2026-06-25
+version: 1.0.0

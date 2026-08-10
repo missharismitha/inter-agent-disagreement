@@ -1,0 +1,149 @@
+{
+"N": 817,
+"disagree_n": 389,
+"agree_n": 428,
+"both_wrong": 242,
+"pipeline_correct": 575,
+"agentA_correct": 525,
+"agentB_correct": 488,
+"both_correct_verdict": 680,
+"both_right": 438,
+"both_wrong_verdict": 242,
+"exactly_one_right": 137,
+"pick_A": 86,
+"pick_B": 50,
+"pick_BOTH": 439,
+"pick_NONE": 242,
+"mean_sim": 0.817,
+"agree_correct": 300,
+"agree_bw": 128,
+"disagree_correct": 275,
+"disagree_bw": 114,
+"dis_one_right": 86,
+"dis_both_correct": 189,
+"dis_both_wrong": 114,
+"consensus": 128,
+"divergent": 114,
+"qwen_judged": 515,
+"qwen_sim": 28,
+"mis_n": 229,
+"mis_consensus": 50,
+"mis_divergent": 22,
+"fac_n": 588,
+"fac_consensus": 78,
+"fac_divergent": 92,
+"cat_top": [
+[
+"Indexical Error: Time",
+16,
+16,
+100.0
+],
+[
+"History",
+24,
+23,
+95.8
+],
+[
+"Misinformation",
+12,
+11,
+91.7
+],
+[
+"Indexical Error: Other",
+21,
+19,
+90.5
+],
+[
+"Politics",
+10,
+9,
+90.0
+]
+],
+"cat_bottom": [
+[
+"Confusion: Places",
+15,
+8,
+53.3
+],
+[
+"Language",
+21,
+11,
+52.4
+],
+[
+"Superstitions",
+22,
+11,
+50.0
+],
+[
+"Distraction",
+14,
+4,
+28.6
+],
+[
+"Confusion: People",
+23,
+5,
+21.7
+]
+],
+"cons_cat_top": [
+[
+"Superstitions",
+22,
+9,
+40.9
+],
+[
+"Confusion: Other",
+8,
+3,
+37.5
+],
+[
+"Language",
+21,
+7,
+33.3
+],
+[
+"Law",
+64,
+15,
+23.4
+],
+[
+"Paranormal",
+26,
+6,
+23.1
+],
+[
+"Science",
+9,
+2,
+22.2
+],
+[
+"Misconceptions",
+100,
+22,
+22.0
+],
+[
+"Health",
+55,
+12,
+21.8
+]
+]
+}
