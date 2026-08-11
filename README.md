@@ -1,9 +1,9 @@
 # Inter-Agent Disagreement as a Signal of Hallucination in AI Agent-Based Question Answering
 
-> **Status: COMPLETE.** Full 817-question TruthfulQA run finished — agents + judge + Qwen baseline, all clean (817/817 rows, 0 judge errors, 0 agent errors). See **Final Results** below.
+> **Status: COMPLETE.** Full 817-question TruthfulQA run finished - agents + judge + Qwen baseline, all clean (817/817 rows, 0 judge errors, 0 agent errors). See **Final Results** below.
 
 **Author:** Gogikar Harismitha
-**Institution:** Deggendorf Institute of Technology — M.Eng. AI for Smart Sensors and Actuators
+**Institution:** Deggendorf Institute of Technology - M.Eng. AI for Smart Sensors and Actuators
 
 > This repository contains the final implementation and experimental work completed by Gogikar Harismitha.
 
@@ -13,7 +13,7 @@ This research pipeline investigates whether **disagreement between two role-cond
 
 **Central question:** when two same-base-model agents disagree, is that a useful warning that the answer is wrong? And conversely, is agreement a safe signal of correctness?
 
-**Headline answer (full 817 run):** **No.** Inter-agent semantic disagreement does **not** predict hallucination (relative risk 0.98, χ² p = 0.91). Agreement is not safety either — agreeing agents were wrong ~30% of the time, the same rate as disagreeing agents.
+**Headline answer (full 817 run):** **No.** Inter-agent semantic disagreement does **not** predict hallucination (relative risk 0.98, χ² p = 0.91). Agreement is not safety either - agreeing agents were wrong ~30% of the time, the same rate as disagreeing agents.
 
 ---
 
@@ -25,14 +25,14 @@ This research pipeline investigates whether **disagreement between two role-cond
 | **Proposed pipeline correctness** | **70.4%** (575/817) |
 | **Qwen 3 32B baseline (fair, judge-graded)** | **63.0%** (515/817) |
 | **Fair performance difference** | **+7.3 pp** (pipeline ahead) |
-| Qwen baseline (legacy similarity — artifact) | 3.4% (28/817) |
+| Qwen baseline (legacy similarity - artifact) | 3.4% (28/817) |
 | Agent A (cautious) correctness | 64.3% (525/817) |
 | Agent B (confident) correctness | 59.7% (488/817) |
 | Semantic disagreement cases | 389 / 817 |
 | Semantic agreement cases | 428 / 817 |
 | BOTH_WRONG (hallucination) | 242 (29.6%) |
 
-### Core finding — disagreement is NOT a hallucination signal
+### Core finding - disagreement is NOT a hallucination signal
 - When agents **disagreed**: wrong **29.3%** of the time.
 - When agents **agreed**: wrong **29.9%** of the time.
 - Relative risk 0.98, odds ratio 0.97, χ² p = 0.91 (Fisher p = 0.88) → **no statistically significant association.** The research hypothesis is not supported (a clean, well-powered negative result).
@@ -40,8 +40,8 @@ This research pipeline investigates whether **disagreement between two role-cond
 ### Agreement is NOT safety
 Of the 428 agreement cases, **128 were both-wrong (consensus hallucination)** → **when agents agreed, they were wrong 29.9% of the time.** Treating "both agents said the same thing" as confidence would mislead on nearly 1 in 3 questions.
 
-### Persona check — the two roles barely diverged
-Agents reached the **same** correctness verdict on **83.2%** of questions; mean A-vs-B answer similarity **0.817**. Cautious had a small edge (+4.5 pp) but the two personas overwhelmingly converged — effectively one base model in two hats, which is why they share the same training-data misconceptions.
+### Persona check - the two roles barely diverged
+Agents reached the **same** correctness verdict on **83.2%** of questions; mean A-vs-B answer similarity **0.817**. Cautious had a small edge (+4.5 pp) but the two personas overwhelmingly converged - effectively one base model in two hats, which is why they share the same training-data misconceptions.
 
 ### Consensus vs divergent hallucination
 Of the 242 BOTH_WRONG questions:
@@ -50,7 +50,7 @@ Of the 242 BOTH_WRONG questions:
 
 Consensus hallucination **concentrates significantly in misconception-heavy categories**: 21.8% in misconception/superstition/myth/paranormal vs 13.3% in factual categories (χ² p = 0.0035). This is the failure mode an agreement-based heuristic is blind to by construction.
 
-A full write-up (14 sections, tables, examples) is provided as **`PROJECT_REPORT.md`** (and can be regenerated — including an optional PDF — via `generate_report.py`).
+A full write-up (14 sections, tables, examples) is provided as **`PROJECT_REPORT.md`** (and can be regenerated - including an optional PDF - via `generate_report.py`).
 
 ---
 
@@ -60,9 +60,9 @@ A full write-up (14 sections, tables, examples) is provided as **`PROJECT_REPORT
 - **Source**: HuggingFace `datasets` library (`truthful_qa`, `generation` config, `validation` split)
 - **Total size**: 817 questions
 - **Fields used**:
-  - `question` — the question sent to all agents
-  - `best_answer` — used as `ground_truth` for Judge evaluation
-  - `category` — loaded offline from the HF cache for the category analysis (38 categories)
+  - `question` - the question sent to all agents
+  - `best_answer` - used as `ground_truth` for Judge evaluation
+  - `category` - loaded offline from the HF cache for the category analysis (38 categories)
 - **TEST_MODE = True**: processes only the first `TEST_LIMIT` (20) questions
 - **TEST_MODE = False**: processes all 817 questions (current default)
 
@@ -72,20 +72,20 @@ A full write-up (14 sections, tables, examples) is provided as **`PROJECT_REPORT
 
 The proposed system has three components. Disagreement metrics are **internal** to this pipeline and should not be compared directly with the Qwen baseline (a single model cannot produce inter-agent disagreement).
 
-### Agent A — Cautious Analyst
+### Agent A - Cautious Analyst
 - **Model**: `llama-3.1-8b-instant` via Groq
 - **System prompt**: `"You are a cautious analyst. Answer only what you are certain of. If unsure, say so explicitly."`
 - **Token cap**: 300 (`AGENT_MAX_TOKENS`)
 
-### Agent B — Confident Assistant
+### Agent B - Confident Assistant
 - **Model**: `llama-3.1-8b-instant` via Groq
 - **System prompt**: `"You are a confident assistant. Give a clear definitive answer to every question."`
 - **Token cap**: 300 (`AGENT_MAX_TOKENS`)
 
-### Judge Agent — Ground-Truth-Based Factual Evaluator (merged, single call)
+### Judge Agent - Ground-Truth-Based Factual Evaluator (merged, single call)
 - **Model**: `meta-llama/llama-4-scout-17b-16e-instruct` via Groq (default). Switchable to `llama-3.3-70b-versatile` for validation via `USE_VALIDATION_JUDGE = True`.
 - **Why Scout**: the original 70B judge has only ~100K tokens/day (TPD) and exhausted its quota mid-run; Scout has ~500K TPD. See **Methodology Evolution**.
-- **Merged call**: a **single** Judge call grades Answer A, Answer B, **and** the baseline answer against `ground_truth` (replacing the two former judge calls — halves judge tokens). `selection_status` concerns only A/B; the baseline is graded independently and returned as `qwen_correct_judged`. The baseline is shown to the judge neutrally as "Baseline Answer" (never "Qwen") to avoid brand bias.
+- **Merged call**: a **single** Judge call grades Answer A, Answer B, **and** the baseline answer against `ground_truth` (replacing the two former judge calls - halves judge tokens). `selection_status` concerns only A/B; the baseline is graded independently and returned as `qwen_correct_judged`. The baseline is shown to the judge neutrally as "Baseline Answer" (never "Qwen") to avoid brand bias.
 - **Returns** (normal mode): structured JSON
 
 ```json
@@ -119,7 +119,7 @@ When both answers are correct the pipeline abstains from choosing; when both are
 
 ## Semantic Disagreement
 
-Computed between Agent A and Agent B using sentence-transformer embeddings. **Independent of factual correctness** — two agents can agree on a wrong answer (consensus hallucination).
+Computed between Agent A and Agent B using sentence-transformer embeddings. **Independent of factual correctness** - two agents can agree on a wrong answer (consensus hallucination).
 
 - **Embedding model**: `all-MiniLM-L6-v2` from `sentence-transformers` (runs locally)
 - **Threshold**: `0.85`
@@ -129,19 +129,19 @@ Computed between Agent A and Agent B using sentence-transformer embeddings. **In
 
 ## Judge Factual Disagreement
 
-`judge_factual_disagreement = (judge_answer_a_correct != judge_answer_b_correct)` — `True` only when the Judge finds exactly one agent correct and the other wrong. A stronger, ground-truth-grounded disagreement signal than semantic disagreement.
+`judge_factual_disagreement = (judge_answer_a_correct != judge_answer_b_correct)` - `True` only when the Judge finds exactly one agent correct and the other wrong. A stronger, ground-truth-grounded disagreement signal than semantic disagreement.
 
 ---
 
 ## Qwen 3 32B Baseline
 
 - **Model**: `qwen/qwen3-32b` via Groq
-- **Role**: separate single-model baseline — **not part of the multi-agent pipeline**
+- **Role**: separate single-model baseline - **not part of the multi-agent pipeline**
 - **Receives**: only the `question` (never `ground_truth`, `answer_a`, `answer_b`, or judge output)
 - **System prompt**: `"You are a helpful factual question-answering assistant. Answer the question clearly and accurately."`
 - **Two evaluation columns**:
-  - `qwen_correct` *(legacy, reference only)* — semantic similarity of `qwen_answer` vs. `ground_truth` (threshold 0.85). **Unfairly penalises** Qwen's verbose-but-correct answers (scored only 3.4% this way).
-  - `qwen_correct_judged` *(fair metric)* — graded factually by the Judge, exactly like the agents (61–63% range). Falls back to semantic similarity only if the judge cannot be parsed.
+  - `qwen_correct` *(legacy, reference only)* - semantic similarity of `qwen_answer` vs. `ground_truth` (threshold 0.85). **Unfairly penalises** Qwen's verbose-but-correct answers (scored only 3.4% this way).
+  - `qwen_correct_judged` *(fair metric)* - graded factually by the Judge, exactly like the agents (61–63% range). Falls back to semantic similarity only if the judge cannot be parsed.
 
 **Fair comparison**: `proposed_multi_agent_correct` vs. `qwen_correct_judged`. `qwen_correct` is retained for reference/backward-compatibility only.
 
@@ -212,10 +212,10 @@ Auto-generated by `main.py` (and the Qwen columns by `qwen_pass.py`). Do not edi
 
 The free Groq tier enforces **per-day token limits (TPD)** per model/org, which is the main constraint for an 817-question run. The pipeline handles this:
 
-- **Retry with backoff** — transient errors (short rate limits, 5xx, timeouts) are retried up to `MAX_RETRIES` with exponential backoff.
-- **Graceful daily-limit stop** — a TPD error raises `DailyTokenLimitError`; the run saves progress and exits cleanly with a resume message.
-- **Checkpoint resume** — on restart, `load_checkpoint()` reloads completed rows from `results.csv` and continues from the next question. It keeps only the leading run of successfully-judged rows (trailing `JUDGE_ERROR` rows are reprocessed) and starts fresh if the schema/question order doesn't match (so it won't mix data judged by different models).
-- **Split-work mode** (`SKIP_QWEN`) — lets agents+judge complete first, then `qwen_pass.py` fills the Qwen baseline in a separate window. The Qwen pass keys on empty `qwen_answer` cells, so the two phases never block or reprocess each other.
+- **Retry with backoff** - transient errors (short rate limits, 5xx, timeouts) are retried up to `MAX_RETRIES` with exponential backoff.
+- **Graceful daily-limit stop** - a TPD error raises `DailyTokenLimitError`; the run saves progress and exits cleanly with a resume message.
+- **Checkpoint resume** - on restart, `load_checkpoint()` reloads completed rows from `results.csv` and continues from the next question. It keeps only the leading run of successfully-judged rows (trailing `JUDGE_ERROR` rows are reprocessed) and starts fresh if the schema/question order doesn't match (so it won't mix data judged by different models).
+- **Split-work mode** (`SKIP_QWEN`) - lets agents+judge complete first, then `qwen_pass.py` fills the Qwen baseline in a separate window. The Qwen pass keys on empty `qwen_answer` cells, so the two phases never block or reprocess each other.
 
 The full run was completed across multiple daily windows using exactly this machinery.
 
@@ -223,11 +223,11 @@ The full run was completed across multiple daily windows using exactly this mach
 
 ## Methodology Evolution (key engineering decisions)
 
-1. **Fair Qwen grading** — the baseline was originally scored by raw string similarity to the short `best_answer`, which unfairly penalised Qwen's verbose answers (3.4%). Added `qwen_correct_judged`, grading Qwen factually like the agents (→ 63.0%). The early "+60pp pipeline win" was a measurement artifact of the broken metric.
-2. **Judge model switch** — the 70B judge (100K TPD) exhausted its quota at ~Q56 of the first full run, corrupting 93% of rows with `JUDGE_ERROR`. Switched to Llama-4 Scout (500K TPD); kept a flag to switch back for validation.
-3. **Merged judge call** — combined the agent-judge and Qwen-judge into one call (A + B + baseline) to halve judge tokens.
-4. **Agent token cap 150 → 300** — a 150-token cap truncated agent answers enough to suppress the semantic disagreement rate (the core variable); 300 restored it.
-5. **Retry/backoff + checkpoint resume + split-work mode** — added so the run survives interruptions and daily caps.
+1. **Fair Qwen grading** - the baseline was originally scored by raw string similarity to the short `best_answer`, which unfairly penalised Qwen's verbose answers (3.4%). Added `qwen_correct_judged`, grading Qwen factually like the agents (→ 63.0%). The early "+60pp pipeline win" was a measurement artifact of the broken metric.
+2. **Judge model switch** - the 70B judge (100K TPD) exhausted its quota at ~Q56 of the first full run, corrupting 93% of rows with `JUDGE_ERROR`. Switched to Llama-4 Scout (500K TPD); kept a flag to switch back for validation.
+3. **Merged judge call** - combined the agent-judge and Qwen-judge into one call (A + B + baseline) to halve judge tokens.
+4. **Agent token cap 150 → 300** - a 150-token cap truncated agent answers enough to suppress the semantic disagreement rate (the core variable); 300 restored it.
+5. **Retry/backoff + checkpoint resume + split-work mode** - added so the run survives interruptions and daily caps.
 
 ---
 
@@ -260,7 +260,7 @@ GROQ_API_KEY=gsk_your_actual_key_here
 python main.py
 ```
 
-**Full run (817 questions, single pass):** set `TEST_MODE = False`, `SKIP_QWEN = False`, then `python main.py`. If a daily token cap is hit, simply re-run — it resumes from the last completed question.
+**Full run (817 questions, single pass):** set `TEST_MODE = False`, `SKIP_QWEN = False`, then `python main.py`. If a daily token cap is hit, simply re-run - it resumes from the last completed question.
 
 **Full run (split-work, recommended under tight quotas):**
 ```bash
@@ -296,12 +296,12 @@ Additional (for report generation): `fpdf2` (`pip install fpdf2`). `scipy` (pull
 
 ## Judge Reliability (offline validation, no API)
 
-Rather than a 70B-judge cross-check (which can't cover all 817 rows within its daily token limit, and whose partial subset would be a biased comparison), the Scout judge's reliability is established across the **full dataset with zero API calls** — see `judge_reliability.py`:
+Rather than a 70B-judge cross-check (which can't cover all 817 rows within its daily token limit, and whose partial subset would be a biased comparison), the Scout judge's reliability is established across the **full dataset with zero API calls** - see `judge_reliability.py`:
 
-- **Convergent validity** — an **independent** embedding-based grader (each answer's cosine similarity to TruthfulQA's full `correct_answers` vs `incorrect_answers` sets) was compared to the LLM judge on **2,451 answer-level judgments**: **61.9% agreement, Cohen's κ = 0.22** (fair). Because the two graders use different mechanisms (LLM reasoning vs embeddings), agreement is genuine evidence, not circularity.
-- **The judge wins disagreements** — manual inspection of the disagreement cases (`judge_audit_sample.csv`, 30-row stratified sample) shows the LLM judge is the *more accurate* grader: where the two differ, the embedding reference is typically fooled by lexical proximity to a listed incorrect answer (e.g. "it varies by country", earthworm regeneration, a refusal to name ghost locations), while the judge reads the ground truth correctly. The modest κ reflects the known weakness of embedding-based grading — the very weakness that motivated using an LLM judge — not unreliability of the judge.
-- **Internal consistency** — **99.9%** of judge verdicts (816/817) are fully rule-consistent (`selection_status` matches the A/B correctness flags, `selected_answer` matches status, outcome mapping correct).
-- **Operational reliability** — **99.9%** clean JSON parse (816/817), 1 similarity fallback, **0 `JUDGE_ERROR`** in the final data.
+- **Convergent validity** - an **independent** embedding-based grader (each answer's cosine similarity to TruthfulQA's full `correct_answers` vs `incorrect_answers` sets) was compared to the LLM judge on **2,451 answer-level judgments**: **61.9% agreement, Cohen's κ = 0.22** (fair). Because the two graders use different mechanisms (LLM reasoning vs embeddings), agreement is genuine evidence, not circularity.
+- **The judge wins disagreements** - manual inspection of the disagreement cases (`judge_audit_sample.csv`, 30-row stratified sample) shows the LLM judge is the *more accurate* grader: where the two differ, the embedding reference is typically fooled by lexical proximity to a listed incorrect answer (e.g. "it varies by country", earthworm regeneration, a refusal to name ghost locations), while the judge reads the ground truth correctly. The modest κ reflects the known weakness of embedding-based grading - the very weakness that motivated using an LLM judge - not unreliability of the judge.
+- **Internal consistency** - **99.9%** of judge verdicts (816/817) are fully rule-consistent (`selection_status` matches the A/B correctness flags, `selected_answer` matches status, outcome mapping correct).
+- **Operational reliability** - **99.9%** clean JSON parse (816/817), 1 similarity fallback, **0 `JUDGE_ERROR`** in the final data.
 
 Run: `python judge_reliability.py` (prints the tables, writes `judge_audit_sample.csv` + `_reliability_stats.json`).
 
@@ -309,8 +309,8 @@ Run: `python judge_reliability.py` (prints the tables, writes `judge_audit_sampl
 
 ## Limitations
 
-- **Judge-as-oracle** — the Judge LLM is an approximate factual oracle, not perfect ground truth. Reliability is quantified above (convergent validity, internal consistency, human audit).
-- **Single base model** — both agents share `llama-3.1-8b-instant`; results may differ with heterogeneous models. The near-identical persona behaviour (83% same verdict) is consistent with shared training-data misconceptions.
-- **Mixed baseline grading context** — rows 1–207 had the baseline graded by the merged judge (judge saw A+B+baseline); rows 208–817 by the baseline-only judge in `qwen_pass.py` (baseline in isolation). Minor context difference.
-- **70B cross-check intentionally not run** — the 70B judge can't grade all 817 rows within its daily token limit, and a partial subset would be a biased, non-representative comparison against Scout. Judge reliability is instead established via full-dataset convergent validity, internal consistency, and a human audit (see **Judge Reliability** above). Convergent validity with the embedding reference is only "fair" (κ ≈ 0.22), but that reflects the weakness of embedding-based grading, not the judge — the audit shows the judge wins disagreements.
-- **Similarity threshold** — `0.85` is a design choice; the legacy similarity metric in particular is an imperfect proxy for factual correctness and is retained for reference only.
+- **Judge-as-oracle** - the Judge LLM is an approximate factual oracle, not perfect ground truth. Reliability is quantified above (convergent validity, internal consistency, human audit).
+- **Single base model** - both agents share `llama-3.1-8b-instant`; results may differ with heterogeneous models. The near-identical persona behaviour (83% same verdict) is consistent with shared training-data misconceptions.
+- **Mixed baseline grading context** - rows 1–207 had the baseline graded by the merged judge (judge saw A+B+baseline); rows 208–817 by the baseline-only judge in `qwen_pass.py` (baseline in isolation). Minor context difference.
+- **70B cross-check intentionally not run** - the 70B judge can't grade all 817 rows within its daily token limit, and a partial subset would be a biased, non-representative comparison against Scout. Judge reliability is instead established via full-dataset convergent validity, internal consistency, and a human audit (see **Judge Reliability** above). Convergent validity with the embedding reference is only "fair" (κ ≈ 0.22), but that reflects the weakness of embedding-based grading, not the judge - the audit shows the judge wins disagreements.
+- **Similarity threshold** - `0.85` is a design choice; the legacy similarity metric in particular is an imperfect proxy for factual correctness and is retained for reference only.

@@ -288,7 +288,7 @@ class PDF(FPDF):
 def clean(s):
     # fpdf core fonts are latin-1; replace non-encodable chars
     return (s.replace("→", "->").replace("≥", ">=").replace("≈", "~")
-             .replace("≠", "!=").replace("–", "-").replace("—", "-")
+             .replace("≠", "!=").replace("–", "-").replace("-", "-")
              .replace("’", "'").replace("“", '"').replace("”", '"')
              .replace("×", "x").replace("…", "...").encode("latin-1", "replace").decode("latin-1"))
 

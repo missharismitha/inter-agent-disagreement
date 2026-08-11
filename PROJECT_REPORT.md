@@ -3,7 +3,7 @@
 
 **Project status report - 2026-06-25**
 
-**Author:** Gogikar Harismitha — Deggendorf Institute of Technology (M.Eng. AI for Smart Sensors and Actuators)
+**Author:** Gogikar Harismitha - Deggendorf Institute of Technology (M.Eng. AI for Smart Sensors and Actuators)
 
 ### At a glance
 
